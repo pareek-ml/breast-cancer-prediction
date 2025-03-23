@@ -1,0 +1,24 @@
+data:
+  dataset_id: 17
+  test_size: 0.2
+  random_state: 42
+preprocessing:
+  scaler: StandardScaler
+  feature_selection: SelectKBest
+  n_features: 20
+model:
+  name: RandomForestClassifier
+  params:
+    n_estimators: 100
+    max_depth: 10
+    random_state: 42
+training:
+  cv_folds: 5
+  scoring: accuracy
+  n_jobs: -1
+visualization:
+  figsize:
+  - 10
+  - 6
+  style: seaborn
+  save_path: results/figures
