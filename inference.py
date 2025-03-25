@@ -36,9 +36,11 @@ def predict(data: InputData):
         'texture3', 'perimeter3', 'area3', 'smoothness3', 'compactness3', 'concavity3',
           'concave_points3', 'symmetry3']
     """
-    features_array = np.array(data.features).reshape(1, -1)
-    prediction = model.predict(features_array)
+    input_array = np.array(data.features).reshape(1, -1)
+    input_scaled = bundle["scaler"].transform(input_array)
+    input_selected = bundle["selector"].transform(input_scaled)
+    prediction = bundle["model"].predict(input_selected)
     return {"prediction": prediction.tolist()}
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+# if __name__ == "__main__":
+#     uvicorn.run("inference:app", host="0.0.0.0", port=8000, reload=True)
