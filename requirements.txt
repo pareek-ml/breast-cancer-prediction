@@ -7,3 +7,6 @@ jupyter>=1.0.0
 hydra-core>=1.3.0
 ucimlrepo>=0.0.3
 optuna>=3.3.0 
+joblib
+fastapi
+uvicorn

@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: ml-model-api
+    env: docker
+    plan: free
+    autoDeploy: true
