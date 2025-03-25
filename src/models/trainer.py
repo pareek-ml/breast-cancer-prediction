@@ -72,8 +72,14 @@ def train_model(cfg: DictConfig, processed_dict: Dict[str, Any]) -> Dict[str, An
         "f1": f1_score(y_true, y_pred),
     }
 
+    bundle = {
+        "model": best_model,
+        "scaler": processed_dict["scaler"],
+        "selector": processed_dict["selector"],
+        "feature_names": processed_dict["feature_names"],
+    }
     # Save model
-    joblib.dump(best_model, "results/models/best_model.joblib")
+    joblib.dump(bundle, "results/models/best_model.joblib")
 
     # Get feature importance
     feature_importance = best_model.feature_importances_
