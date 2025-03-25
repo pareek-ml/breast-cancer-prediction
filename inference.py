@@ -7,6 +7,7 @@ from pydantic import BaseModel
 import joblib
 import numpy as np
 import os
+import uvicorn
 
 
 # Define input schema
@@ -16,7 +17,7 @@ class InputData(BaseModel):
 
 # Load model
 MODEL_PATH = "results/models/best_model.joblib"
-bundle = joblib.load("results/models/final_bundle.joblib")
+bundle = joblib.load(MODEL_PATH)
 model = bundle["model"]
 scaler = bundle["scaler"]
 selector = bundle["selector"]
@@ -38,3 +39,6 @@ def predict(data: InputData):
     features_array = np.array(data.features).reshape(1, -1)
     prediction = model.predict(features_array)
     return {"prediction": prediction.tolist()}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
