@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY_NAME: bcancer  # Change this to your ACR name
-  IMAGE_NAME: breast-cancer-api
+  IMAGE_NAME: ml-api-demo
 
 jobs:
   build-and-push:
@@ -40,4 +40,4 @@ jobs:
         with:
           app-name: 'breast-cancer-api'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_XXXXX }}
-          images: bcancer.azurecr.io/breast-cancer-api:latest
+          images: bcancer.azurecr.io/ml-api-demo:latest
