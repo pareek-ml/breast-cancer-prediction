@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 10000
 
 # Run server
-CMD ["uvicorn", "inference:app", "--host", "0.0.0.0", "--port", "10000"]
+CMD ["uvicorn", "inference:app", "--host", "0.0.0.0", "--port", "80"]
