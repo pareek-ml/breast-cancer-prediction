@@ -38,6 +38,6 @@ jobs:
       - name: Trigger Azure App Service Deploy
         uses: Azure/webapps-deploy@v3
         with:
-          app-name: 'breast-cancer-api'
+          app-name: 'bcancer'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_XXXXX }}
           images: bcancer.azurecr.io/ml-api-demo:latest
