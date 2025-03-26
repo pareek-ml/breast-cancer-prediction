@@ -8,6 +8,9 @@ import joblib
 import numpy as np
 import os
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
+
+
 
 
 # Define input schema
@@ -25,6 +28,14 @@ feature_names = bundle["feature_names"]
 
 # Initialize app
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Or replace * with specific domains like ["https://your-frontend.com"]
+    allow_credentials=True,
+    allow_methods=["*"],  # or ["POST", "OPTIONS"]
+    allow_headers=["*"],  # or ["Content-Type", "Accept"]
+)
 
 
 @app.post("/predict")
