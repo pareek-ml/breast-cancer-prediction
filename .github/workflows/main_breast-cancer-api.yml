@@ -29,10 +29,10 @@ jobs:
       - name: Push image to ACR
         run: |
           docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:latest
-      
-          - name: Trigger Azure App Service Deploy
-          uses: Azure/webapps-deploy@v3
-          with:
-            app-name: 'breast-cancer-api'
-            publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_XXXXX }}
-            images: bcancer.azurecr.io/breast-cancer-api:latest
+          
+      - name: Trigger Azure App Service Deploy
+        uses: Azure/webapps-deploy@v3
+        with:
+          app-name: 'breast-cancer-api'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_XXXXX }}
+          images: bcancer.azurecr.io/breast-cancer-api:latest
