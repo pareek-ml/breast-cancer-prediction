@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  REGISTRY_NAME: bcacr  # Change this to your ACR name
+  REGISTRY_NAME: bcancer  # Change this to your ACR name
   IMAGE_NAME: breast-cancer-api
 
 jobs:
