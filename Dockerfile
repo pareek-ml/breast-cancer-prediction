@@ -12,7 +12,7 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . .
 
 # Expose port
-EXPOSE 10000
+EXPOSE 80
 
 # Run server
 CMD ["uvicorn", "inference:app", "--host", "0.0.0.0", "--port", "80"]
