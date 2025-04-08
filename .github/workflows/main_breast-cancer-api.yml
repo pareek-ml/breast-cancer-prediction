@@ -1,4 +1,4 @@
-name: Build & Deploy to Azure Web App via ACR
+name: Build & Deploy to Azure Web App via GHCR
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - main
 
 env:
-  REGISTRY_NAME: bcancer  # Change this to your ACR name
-  IMAGE_NAME: ml-api-demo
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/ml-api-demo  # e.g., username/repo/ml-api-demo
 
 jobs:
   build-and-push:
@@ -17,27 +17,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Log in to GitHub Container Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest .
+
+      - name: Push image to GHCR
+        run: |
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+
       - name: Log in to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Log in to ACR
-        run: |
-          echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ env.REGISTRY_NAME }}.azurecr.io \
-            -u ${{ secrets.ACR_USERNAME }} --password-stdin
-
-      - name: Build Docker image
-        run: |
-          docker build -t ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:latest .
-
-      - name: Push image to ACR
-        run: |
-          docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:latest
-          
       - name: Trigger Azure App Service Deploy
         uses: Azure/webapps-deploy@v3
         with:
-          app-name: 'bcancer'
+          app-name: 'bcancer'  # Your Azure App Service name
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_XXXXX }}
-          images: bcancer.azurecr.io/ml-api-demo:latest
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
