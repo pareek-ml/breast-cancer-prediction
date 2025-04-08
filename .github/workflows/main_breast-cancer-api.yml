@@ -7,10 +7,10 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/ml-api-demo  # e.g., username/repo/ml-api-demo
+  IMAGE_NAME: ${{ github.repository }}/ml-api-demo
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,7 +25,7 @@ jobs:
         run: |
           docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest .
 
-      - name: Push image to GHCR
+      - name: Push Docker image to GHCR
         run: |
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
@@ -34,9 +34,8 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Trigger Azure App Service Deploy
-        uses: Azure/webapps-deploy@v3
+      - name: Deploy to Azure Web App (GHCR container)
+        uses: azure/webapps-deploy@v3
         with:
-          app-name: 'bcancer'  # Your Azure App Service name
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_XXXXX }}
+          app-name: 'bcancer'
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
