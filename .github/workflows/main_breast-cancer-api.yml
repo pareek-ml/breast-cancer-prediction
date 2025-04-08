@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: pareek-ml/breast-cancer-prediction/ml-api-demo
+  IMAGE_NAME: ${{ github.repository }}/ml-api-demo
 
 jobs:
   build-and-deploy:
@@ -18,16 +18,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Log in to GitHub Container Registry
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u pareekml --password-stdin
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ env.IMAGE_NAME }}:latest .
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest .
 
       - name: Push Docker image to GHCR
         run: |
-          docker push ghcr.io/${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Log in to Azure
         uses: azure/login@v1
